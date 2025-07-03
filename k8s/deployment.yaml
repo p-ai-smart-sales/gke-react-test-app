@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: react-app
-          image: gcr.io/smart-sales-464807/gke-react-test-app:latest
+          image: us-central1-docker.pkg.dev/smart-sales-464807/gke-react-test-app/react-app:latest
           ports:
             - containerPort: 80
           env:

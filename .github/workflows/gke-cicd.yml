@@ -12,7 +12,7 @@ jobs:
       CLUSTER_NAME: smart-sales-test
       REGION: us-east1
       DEPLOYMENT_NAME: react-app
-      IMAGE: gcr.io/smart-sales-464807/gke-react-test-app:${{ github.sha }}
+      IMAGE: us-central1-docker.pkg.dev/smart-sales-464807/gke-react-test-app/react-app:${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,8 +40,8 @@ jobs:
         with:
           project_id: ${{ env.PROJECT_ID }}
 
-      - name: Configure Docker for GCR
-        run: gcloud auth configure-docker --quiet
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
       - name: Build Docker image
         run: docker build -t $IMAGE .
