@@ -52,8 +52,12 @@ jobs:
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION --project $PROJECT_ID
 
-      - name: Update deployment image
+      - name: Apply deployment manifest (first time or update)
+        run: kubectl apply -f k8s/deployment.yaml
+        working-directory: ./
+
+      - name: Set deployment image to current commit
         run: |
-          kubectl set image deployment/$DEPLOYMENT_NAME react-app=$IMAGE --record || kubectl apply -f k8s/deployment.yaml
-          kubectl rollout status deployment/$DEPLOYMENT_NAME || echo 'No deployment to check.'
+          kubectl set image deployment/$DEPLOYMENT_NAME react-app=$IMAGE --record
+          kubectl rollout status deployment/$DEPLOYMENT_NAME
         working-directory: ./
