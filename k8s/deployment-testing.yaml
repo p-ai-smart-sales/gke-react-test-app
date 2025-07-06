@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-app-testing
+  labels:
+    app: react-app-testing
+    environment: testing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-app-testing
+  template:
+    metadata:
+      labels:
+        app: react-app-testing
+        environment: testing
+    spec:
+      containers:
+        - name: react-app
+          image: us-central1-docker.pkg.dev/smart-sales-464807/gke-react-test-app/react-app:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: NODE_ENV
+              value: "testing"
+            - name: ENVIRONMENT
+              value: "testing"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-app-testing-service
+  labels:
+    app: react-app-testing
+    environment: testing
+spec:
+  type: LoadBalancer
+  selector:
+    app: react-app-testing
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
